@@ -1,0 +1,20 @@
+
+#footer-font{
+    color:white;
+    font-weight: 400px;
+}
+
+#aa:hover{
+    transform: translateY(-10px);
+}
+
+#aa{          
+    color: white;
+    font-size: 15px;
+    font-weight: 500; 
+    transition: transform 250ms;
+}
+
+.ff-footer{
+    font-size: 15px;
+}

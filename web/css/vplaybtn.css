@@ -1,0 +1,65 @@
+ 
+.video
+{    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.video ion-icon
+{   height: 50px;
+    width: 50px;
+    color: #fff;
+    font-size: 30px;
+    padding: 25px;
+    background: rgba(255,255,255,.3);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+}
+.video ion-icon:hover:before
+{
+    content: '';
+    position: absolute;
+    border:15px solid #e5a84f;;
+    border-radius: 50%;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    animation: animate 1.5s linear infinite;
+    opacity: 0;
+}
+.video ion-icon:after
+{
+
+}
+@keyframes animate
+{
+    0%
+    {
+        transform: scale(.5);
+    }
+    50%
+    {
+        opacity: 1;
+    }
+    100%
+    {
+        transform: scale(1.5);
+    }
+}
+@keyframes animated
+{
+    0%
+    {
+        transform: scale(.5);
+    }
+    50%
+    {
+        opacity: 1;
+    }
+    100%
+    {
+        transform: scale(1.5);
+    }
+}

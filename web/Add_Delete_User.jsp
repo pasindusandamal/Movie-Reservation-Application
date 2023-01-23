@@ -1,0 +1,106 @@
+<%@ page import = "java.io.*,java.util.*,java.sql.*"%>
+<%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+         <!--Font Awesome CDN Links-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.0/css/font-awesome.css" integrity="sha512-72McA95q/YhjwmWFMGe8RI3aZIMCTJWPBbV8iQY3jy1z9+bi6+jHnERuNrDPo/WGYEzzNs4WdHNyyEr/yXJ9pA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>ABC Cinema - Update or Delete User</title>
+    </head>
+    <body>
+        <!--SQL Query-->
+        <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/lginfo" user = "root"  password = ""/>
+        <sql:query dataSource = "${snapshot}" var = "result">SELECT * from users;</sql:query>
+            <!--SQL Query-->
+
+
+            <div class="container-fluid" >
+                <br>
+                <h2 style="text-align: center">Update/Delete User Information</h2>
+                <a href="AdminDB.jsp"><img src="images/icons8-home-page-96.png" style=" height: 60px; width: 60px;"></a>
+                <br>
+                <hr>
+                <br>
+                <div class="col" >
+                    <table  id="myTable" border = "0"  style=" border: solid 1px rgb(237, 237, 245);">
+                        <tr>
+                            <th>user Id</th>
+                             <th>User Name</th>
+                            <th>User Email</th>
+                            <th>User Password</th>
+                            <th>User Mobile</th>
+                            <th>User Type</th>
+
+                        </tr>
+
+
+                    <c:forEach var = "row" items = "${result.rows}">
+                        <form action="Add_Delete_User.jsp" method="post">
+                            <tr>
+                                <td><input   name="mov_id"   value = "${row.id}"/></td>
+                                <td><input  name="movname" type="text" value = "${row.uname}"/></td>
+                                <td><input   name="movelocation" type="text" value = "${row.uemail}"/></td>
+                                <td><input   name="movetype" type="text" value = "${row.pwd}"/></td>
+                                <td><input   name="tkprice" type="text" value = "${row.umobile}"/></td>
+                                <td><input   name="time1" type="text" value = "${row.usertype}"/></td>
+                                <td><button type="submit"  class="btn btn-success" name="update"><i class="fa-solid fa-pen-to-square"></i></button></td>
+                                <td> <button type="submit" class="btn btn-success" name="delete"/><i class="fa-solid fa-trash"></i></button></td>
+                            </tr>
+                        </form>
+                    </c:forEach>   
+                </table>
+            </div>
+        </div>
+
+
+
+        <!--SQL Query-->
+        <%  String id = request.getParameter("id");
+            String uname = request.getParameter("uname");
+            String update = request.getParameter("update");
+            String delete = request.getParameter("delete");
+
+            if (update != null) {
+
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/lginfo", "root", "");
+                    PreparedStatement ps = (PreparedStatement) con.prepareStatement("update users set uname='" + uname + "' where id='" + id + "'");
+                    ps.executeUpdate();
+                    RequestDispatcher rd = request.getRequestDispatcher("Add_Delete_User.jsp");
+                    rd.forward(request, response);
+
+                } catch (Exception e) {
+                }
+            }
+
+            if (delete != null) {
+
+                String sql = "DELETE FROM users WHERE id='" + id + "'";
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/lginfo", "root", "");
+                    Statement st = conn.createStatement();
+                    st.executeUpdate(sql);
+                    conn.close();
+                    RequestDispatcher rd = request.getRequestDispatcher("Add_Delete_User.jsp");
+                    rd.forward(request, response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        %>
+        <!--SQL Query-->
+
+    </body>
+</html>
